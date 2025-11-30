@@ -1,0 +1,86 @@
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, PageBreak, Table, TableStyle
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.pagesizes import A4
+from reportlab.lib import colors
+
+# Output PDF name
+file_path = "Pearl_S_Buck_Susan_Hill_Project.pdf"
+
+doc = SimpleDocTemplate(file_path, pagesize=A4, rightMargin=40, leftMargin=40, topMargin=40, bottomMargin=40)
+styles = getSampleStyleSheet()
+story = []
+
+title = ParagraphStyle('title', parent=styles['Title'], alignment=1, fontSize=22)
+heading = ParagraphStyle('heading', parent=styles['Heading1'], fontSize=16, textColor=colors.darkblue)
+normal = styles['Normal']
+
+def add_h(text):
+    story.append(Paragraph(text, heading))
+    story.append(Spacer(1, 10))
+
+def add_p(text):
+    story.append(Paragraph(text, normal))
+    story.append(Spacer(1, 8))
+
+# COVER PAGE
+story.append(Paragraph("A Comparative Study on Pearl S. Buck & Susan Hill", title))
+story.append(Spacer(1, 40))
+add_p("English Project — Class 12")
+add_p("<< Paste images here >>")
+story.append(PageBreak())
+
+# INDEX
+add_h("Index")
+index_data = [
+    ["Sr. No.", "Topic"],
+    ["1", "Pearl S. Buck – Biography"],
+    ["2", "Works & Achievements"],
+    ["3", "Susan Hill – Biography"],
+    ["4", "Major Books & Awards"],
+    ["5", "Comparison"],
+    ["6", "Conclusion"],
+    ["7", "Bibliography"]
+]
+table = Table(index_data)
+table.setStyle(TableStyle([("GRID", (0,0), (-1,-1), 1, colors.black)]))
+story.append(table)
+story.append(PageBreak())
+
+# CONTENT
+add_h("Pearl S. Buck – Biography")
+add_p("Pearl Sydenstricker Buck (1892–1973) was an American novelist known for realistic depictions of Chinese culture. Her most famous novel is The Good Earth.")
+story.append(PageBreak())
+
+add_h("Major Works & Awards — Pearl S. Buck")
+add_p("• The Good Earth\n• A House Divided\n• Dragon Seed\n\nAwards:\n• Nobel Prize in Literature (1938)\n• Pulitzer Prize (1932)")
+story.append(PageBreak())
+
+add_h("Susan Hill – Biography")
+add_p("Susan Hill (born 1942) is a British author famous for horror fiction including The Woman in Black. Her stories focus on psychological fear and suspense.")
+story.append(PageBreak())
+
+add_h("Major Books & Awards — Susan Hill")
+add_p("• The Woman in Black\n• I’m the King of the Castle\n• The Mist in the Mirror\n\nAwards:\n• Somerset Maugham Award\n• Whitbread Award")
+story.append(PageBreak())
+
+add_h("Comparison")
+add_p("""
+<table border='1' cellpadding='4'>
+<tr><th>Point</th><th>Pearl S. Buck</th><th>Susan Hill</th></tr>
+<tr><td>Genre</td><td>Realistic Fiction</td><td>Horror, Mystery</td></tr>
+<tr><td>Famous Work</td><td>The Good Earth</td><td>The Woman in Black</td></tr>
+<tr><td>Theme</td><td>Culture & Society</td><td>Fear & Suspense</td></tr>
+</table>
+""")
+story.append(PageBreak())
+
+add_h("Conclusion")
+add_p("Both authors influenced literature in different ways—Buck through realistic social issues and Hill through modern ghost storytelling.")
+story.append(PageBreak())
+
+add_h("Bibliography")
+add_p("• Britannica\n• Online Literature Articles\n• Author Biographies\n• Classroom Notes")
+
+doc.build(story)
+
+print("PDF Created Successfully:", file_path)
